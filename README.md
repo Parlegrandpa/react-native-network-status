@@ -138,7 +138,7 @@ export default App;
 
 ## Contributing
 
-Contributions are welcome! Please submit a pull request or open an issue on [GitHub](readme.com).
+Contributions are welcome! Please submit a pull request or open an issue on [GitHub](https://github.com/Parlegrandpa/react-native-network-status).
 
 ## License
 

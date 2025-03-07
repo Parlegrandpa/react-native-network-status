@@ -1,35 +1,33 @@
 import { useEffect, useState } from "react";
 import NetInfo from "@react-native-community/netinfo";
 
-// Hook to track network status
+let networkHistory = [];
+
 export const useNetworkStatus = () => {
   const [networkStatus, setNetworkStatus] = useState({
-    isConnected: null, // null initially until we fetch status
-    type: "unknown", // e.g., 'wifi', 'cellular', 'none', 'unknown'
+    isConnected: null,
+    type: "unknown",
   });
 
   useEffect(() => {
-    // Fetch initial network status
     NetInfo.fetch().then((state) => {
-      setNetworkStatus({
-        isConnected: state.isConnected,
-        type: state.type,
-      });
+      updateStatus(state);
     });
-
-    // Subscribe to network status updates
-    const unsubscribe = NetInfo.addEventListener((state) => {
-      setNetworkStatus({
-        isConnected: state.isConnected,
-        type: state.type,
-      });
-    });
-
-    // Cleanup subscription on unmount
+    const unsubscribe = NetInfo.addEventListener(updateStatus);
     return () => unsubscribe();
   }, []);
 
-  return networkStatus;
+  const updateStatus = (state) => {
+    const newStatus = {
+      isConnected: state.isConnected,
+      type: state.type,
+      timestamp: Date.now(),
+    };
+    setNetworkStatus(newStatus);
+    networkHistory = [newStatus, ...networkHistory].slice(0, 10); // Keep last 10
+  };
+
+  return { ...networkStatus, history: networkHistory };
 };
 
 // Function to manually fetch current network status

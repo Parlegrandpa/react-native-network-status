@@ -1,6 +1,6 @@
 {
   "name": "react-native-network-status",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A React Native library to monitor network status",
   "main": "src/index.js",
   "scripts": {
